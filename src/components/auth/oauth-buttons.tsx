@@ -23,6 +23,8 @@ export function OAuthButtons({ next }: { next?: string }) {
       provider,
       options: {
         redirectTo: `${location.origin}/auth/callback${nextParam}`,
+        // 카카오는 닉네임만 요청(이메일 요구로 인한 KOE205 회피). 우리 앱은 가명만 사용.
+        ...(provider === "kakao" ? { scopes: "profile_nickname" } : {}),
       },
     });
     if (error) {
