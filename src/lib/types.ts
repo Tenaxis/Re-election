@@ -65,11 +65,13 @@ export type Database = {
         Row: {
           id: string; author_id: string; name: string; starts_at: string; ends_at: string | null;
           lat: number | null; lng: number | null; address: string; is_reported: boolean;
+          verify_code: string | null; verify_radius_m: number;
           created_at: string; updated_at: string;
         };
         Insert: {
           id?: string; author_id: string; name: string; starts_at: string; ends_at?: string | null;
           lat?: number | null; lng?: number | null; address: string; is_reported?: boolean;
+          verify_code?: string | null; verify_radius_m?: number;
           created_at?: string; updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["schedules"]["Insert"]>;
@@ -101,8 +103,26 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["reports"]["Insert"]>;
         Relationships: [];
       };
+      attendance_verifications: {
+        Row: {
+          id: string; schedule_id: string; user_id: string; phone_hash: string;
+          lat: number; lng: number; photo_path: string;
+          verified_date: string; created_at: string;
+        };
+        Insert: {
+          id?: string; schedule_id: string; user_id: string; phone_hash: string;
+          lat: number; lng: number; photo_path: string;
+          verified_date?: string; created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["attendance_verifications"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: {
+      attendance_today: {
+        Row: { schedule_id: string; cnt: number };
+        Relationships: [];
+      };
       post_feed: {
         Row: {
           id: string; author_id: string; body: string;
@@ -130,6 +150,7 @@ export type Like = Database["public"]["Tables"]["likes"]["Row"];
 export type Schedule = Database["public"]["Tables"]["schedules"]["Row"];
 export type SupportRequest = Database["public"]["Tables"]["support_requests"]["Row"];
 export type Report = Database["public"]["Tables"]["reports"]["Row"];
+export type AttendanceVerification = Database["public"]["Tables"]["attendance_verifications"]["Row"];
 export type PostFeedRow = Database["public"]["Views"]["post_feed"]["Row"];
 
 export type SupportWithAuthor = SupportRequest & {

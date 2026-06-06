@@ -148,6 +148,43 @@ export function ScheduleForm({ initial }: { initial?: Schedule }) {
         </Label>
       </div>
 
+      <fieldset className="space-y-4 rounded-md border border-border bg-card p-4">
+        <legend className="px-1 text-sm font-medium">참여 인증 설정 (선택)</legend>
+        <div className="space-y-1.5">
+          <Label htmlFor="verify_code">현장 인증 코드</Label>
+          <Input
+            id="verify_code"
+            name="verify_code"
+            defaultValue={initial?.verify_code ?? ""}
+            placeholder="예) JUNE0607"
+            maxLength={64}
+            autoComplete="off"
+            aria-invalid={err?.verify_code ? true : undefined}
+            aria-describedby={err?.verify_code ? "verify_code-error" : undefined}
+          />
+          <FieldError id="verify_code-error" message={err?.verify_code?.[0]} />
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="verify_radius_m">인증 허용 반경 (m)</Label>
+          <Input
+            id="verify_radius_m"
+            name="verify_radius_m"
+            inputMode="numeric"
+            defaultValue={initial?.verify_radius_m?.toString() ?? "500"}
+            placeholder="500"
+            aria-invalid={err?.verify_radius_m ? true : undefined}
+            aria-describedby={err?.verify_radius_m ? "verify_radius_m-error" : undefined}
+          />
+          <FieldError id="verify_radius_m-error" message={err?.verify_radius_m?.[0]} />
+        </div>
+
+        <p className="text-xs text-muted-foreground">
+          참여 인증에는 위 좌표(위도·경도)가 필요합니다. 좌표 없이 코드만 저장하면
+          인증을 받을 수 없습니다.
+        </p>
+      </fieldset>
+
       {state.error ? (
         <p role="alert" className="text-sm text-destructive">
           {state.error}

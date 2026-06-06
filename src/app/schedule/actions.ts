@@ -40,6 +40,16 @@ const scheduleSchema = z
     lat: optionalCoord,
     lng: optionalCoord,
     is_reported: z.boolean(),
+    verify_code: z
+      .string()
+      .trim()
+      .max(64, "인증 코드는 64자 이내여야 합니다.")
+      .transform((v) => (v === "" ? null : v)),
+    verify_radius_m: z
+      .string()
+      .trim()
+      .refine((v) => v === "" || (!Number.isNaN(Number(v)) && Number(v) > 0), "양수를 입력하세요.")
+      .transform((v) => (v === "" ? 500 : Math.round(Number(v)))),
   })
   .refine(
     (v) => v.ends_at === null || new Date(v.ends_at) >= new Date(v.starts_at),
@@ -55,6 +65,8 @@ function parse(formData: FormData) {
     lat: formData.get("lat") ?? "",
     lng: formData.get("lng") ?? "",
     is_reported: formData.get("is_reported") === "on" || formData.get("is_reported") === "true",
+    verify_code: formData.get("verify_code") ?? "",
+    verify_radius_m: formData.get("verify_radius_m") ?? "",
   });
 }
 
