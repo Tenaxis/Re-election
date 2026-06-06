@@ -49,6 +49,22 @@
 - 기본 브랜치는 `main`. 커밋 메시지는 한국어로 명확하게.
 - 사용자가 요청할 때만 커밋·푸시한다.
 
-## 명령어
+## 로컬 개발
 
-> 프로젝트 스캐폴딩 후 갱신 예정 (dev/build/lint 등).
+로컬은 **Supabase 로컬 스택**(Docker)으로 개발/테스트한다. `.env.local`은 로컬을 가리킨다.
+프로덕션 값은 Vercel 환경변수에 있다(호스팅 ref `eenzsrxfkabdjqnnngnh`).
+
+```bash
+npm run db:start    # 로컬 Supabase 기동(마이그레이션 자동 적용)
+npm run dev         # 개발 서버 (localhost:3000)
+npm run test:e2e    # Playwright E2E (dev 서버 필요)
+npm run build       # 프로덕션 빌드 (이후 dev 재개 시 .next 삭제 권장)
+npm run db:reset    # 로컬 DB 초기화 후 마이그레이션 재적용
+```
+
+- 마이그레이션은 `supabase/migrations/`. 로컬 적용은 `db:start`/`db:reset`이 처리.
+- `supabase` CLI가 macOS 키체인에서 멈추면 `SUPABASE_ACCESS_TOKEN`을 더미로 설정해 우회.
+- `next build` 직후 `next dev`를 돌리면 `.next` 캐시 충돌이 날 수 있다 → `rm -rf .next` 후 dev.
+
+## 상태
+Phase 1~4 구현·E2E 완료(로컬). 프로덕션 배포는 호스팅 DB에 마이그레이션 적용 + OAuth 자격증명 설정 필요.
