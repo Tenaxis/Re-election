@@ -24,10 +24,12 @@ export function AppShell({
   children,
   nickname,
   isLoggedIn,
+  rightRail,
 }: {
   children: React.ReactNode;
   nickname: string | null;
   isLoggedIn: boolean;
+  rightRail?: React.ReactNode;
 }) {
   const pathname = usePathname();
 
@@ -102,9 +104,16 @@ export function AppShell({
       </header>
 
       {/* ── 본문 ── */}
-      <main className="mx-auto w-full max-w-2xl px-4 pb-24 pt-4 lg:pl-64 lg:pb-10 lg:pr-8">
-        <div className="lg:mx-auto lg:max-w-2xl">{children}</div>
+      <main className="px-4 pb-24 pt-4 lg:pb-10 lg:pl-64 xl:pr-80">
+        <div className="mx-auto max-w-2xl">{children}</div>
       </main>
+
+      {/* ── 데스크탑 우측 위젯 레일 ── */}
+      {rightRail ? (
+        <aside className="fixed inset-y-0 right-0 z-20 hidden w-80 overflow-y-auto border-l border-border bg-background px-4 py-6 xl:block">
+          {rightRail}
+        </aside>
+      ) : null}
 
       {/* ── 모바일 하단 탭 ── */}
       <nav className="fixed inset-x-0 bottom-0 z-30 flex h-16 items-stretch border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">

@@ -40,3 +40,6 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /.playwright/
+
+# 스크린샷 산출물
+/scripts/shots/

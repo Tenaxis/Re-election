@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { AppShell } from "@/components/app-shell";
+import { RightRail } from "@/components/right-rail";
 import { getSessionUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -40,7 +41,11 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AppShell nickname={profile?.nickname ?? null} isLoggedIn={!!userId}>
+          <AppShell
+            nickname={profile?.nickname ?? null}
+            isLoggedIn={!!userId}
+            rightRail={<RightRail />}
+          >
             {children}
           </AppShell>
           <Toaster />
