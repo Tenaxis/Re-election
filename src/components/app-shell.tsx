@@ -10,6 +10,7 @@ import {
   Megaphone,
   Map as MapIcon,
   HeartHandshake,
+  ShieldAlert,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -39,11 +40,13 @@ export function AppShell({
   children,
   nickname,
   isLoggedIn,
+  isAdmin = false,
   rightRail,
 }: {
   children: React.ReactNode;
   nickname: string | null;
   isLoggedIn: boolean;
+  isAdmin?: boolean;
   rightRail?: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -75,6 +78,20 @@ export function AppShell({
               {label}
             </Link>
           ))}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className={cn(
+                "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
+                isActive(pathname, "/admin")
+                  ? "bg-primary/10 text-primary"
+                  : "text-text-2 hover:bg-accent hover:text-foreground",
+              )}
+            >
+              <ShieldAlert className="size-5" />
+              관리자
+            </Link>
+          )}
           <Button asChild className="mt-2 justify-start gap-3" size="lg">
             <Link href="/post/new">
               <PenLine className="size-5" />
@@ -132,7 +149,11 @@ export function AppShell({
       </header>
 
       {/* ── 본문 ── */}
-      <main className="px-4 pb-24 pt-4 lg:pb-10 lg:pl-64 xl:pr-80">
+      <main
+        id="main"
+        tabIndex={-1}
+        className="px-4 pb-24 pt-4 outline-none lg:pb-10 lg:pl-64 xl:pr-80"
+      >
         <div className="mx-auto max-w-2xl">{children}</div>
       </main>
 

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { formatDateTime, initial } from "@/lib/format";
+import { ShareButton } from "@/components/share-button";
 import { deleteSchedule } from "@/app/schedule/actions";
 
 export const dynamic = "force-dynamic";
@@ -89,6 +90,9 @@ export default async function ScheduleDetailPage({
             <span className="text-sm text-text-2">
               {author?.nickname ?? "익명"}
             </span>
+            <div className="ml-auto">
+              <ShareButton title={schedule.name} text={`${formatDateTime(schedule.starts_at)} · ${schedule.address}`} />
+            </div>
           </div>
         </CardContent>
       </Card>

@@ -29,6 +29,39 @@ export async function signUpAndOnboard(page: Page) {
   return { email, password, nickname };
 }
 
+/** 로그인 상태 page로 글 작성 후 상세 URL 반환. */
+export async function createPost(page: Page, body: string, tag?: string) {
+  await page.goto("/post/new");
+  await page.locator("#body").fill(body);
+  if (tag) {
+    await page.locator("#tag-input").fill(tag);
+    await page.locator("#tag-input").press("Enter");
+  }
+  await page.getByRole("button", { name: "등록", exact: true }).click();
+  await page.waitForURL(/\/post\/[0-9a-f-]{36}/, { timeout: 20_000 });
+  return page.url();
+}
+
+/** 로컬 Supabase(service_role) REST로 닉네임 유저를 admin 으로 승격. */
+export async function promoteToAdmin(nickname: string) {
+  const SERVICE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU";
+  const res = await fetch(
+    `http://127.0.0.1:54321/rest/v1/profiles?nickname=eq.${encodeURIComponent(nickname)}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: SERVICE_KEY,
+        Authorization: `Bearer ${SERVICE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({ role: "admin" }),
+    },
+  );
+  if (!res.ok) throw new Error(`promoteToAdmin 실패: ${res.status}`);
+}
+
 /** datetime-local 입력값 포맷 (YYYY-MM-DDTHH:MM) */
 export function dtLocal(daysFromNow: number, hour = 18, minute = 0): string {
   const d = new Date(Date.now() + daysFromNow * 86_400_000);

@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { formatRelativeTime, initial } from "@/lib/format";
 import { LikeButton } from "@/components/post/like-button";
 import { CommentComposer } from "@/components/comment/comment-composer";
+import { ReportButton } from "@/components/report/report-button";
 import { deleteComment } from "@/app/post/actions";
 import type { CommentWithRelations } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -80,7 +81,7 @@ export function CommentItem({
                 답글
               </button>
             )}
-            {isAuthor && (
+            {isAuthor ? (
               <button
                 type="button"
                 onClick={onDelete}
@@ -90,6 +91,13 @@ export function CommentItem({
                 <Trash2 className="size-4" />
                 삭제
               </button>
+            ) : (
+              <ReportButton
+                targetType="comment"
+                targetId={comment.id}
+                isLoggedIn={isLoggedIn}
+                className="!h-auto !px-0 text-xs font-medium text-muted-foreground hover:text-destructive"
+              />
             )}
           </div>
 

@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { AppShell } from "@/components/app-shell";
 import { RightRail } from "@/components/right-rail";
+import { ServiceWorkerRegister } from "@/components/sw-register";
 import { getSessionUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -35,6 +36,12 @@ export default async function RootLayout({
         />
       </head>
       <body className="min-h-full">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:shadow-lg"
+        >
+          본문 바로가기
+        </a>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -44,11 +51,13 @@ export default async function RootLayout({
           <AppShell
             nickname={profile?.nickname ?? null}
             isLoggedIn={!!userId}
+            isAdmin={profile?.role === "admin"}
             rightRail={<RightRail />}
           >
             {children}
           </AppShell>
           <Toaster />
+          <ServiceWorkerRegister />
         </ThemeProvider>
       </body>
     </html>

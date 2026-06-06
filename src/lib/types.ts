@@ -5,6 +5,8 @@ export type MediaType = "image" | "video";
 export type LikeTarget = "post" | "comment";
 export type SupportType = "manpower" | "food" | "hazard" | "cleanup";
 export type SupportStatus = "open" | "in_progress" | "done";
+export type ReportTarget = "post" | "comment" | "support";
+export type ReportStatus = "open" | "resolved";
 
 export type Database = {
   public: {
@@ -87,6 +89,18 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["support_requests"]["Insert"]>;
         Relationships: [];
       };
+      reports: {
+        Row: {
+          id: string; reporter_id: string; target_type: ReportTarget;
+          target_id: string; reason: string; status: ReportStatus; created_at: string;
+        };
+        Insert: {
+          id?: string; reporter_id: string; target_type: ReportTarget;
+          target_id: string; reason: string; status?: ReportStatus; created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["reports"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: {
       post_feed: {
@@ -115,6 +129,7 @@ export type Comment = Database["public"]["Tables"]["comments"]["Row"];
 export type Like = Database["public"]["Tables"]["likes"]["Row"];
 export type Schedule = Database["public"]["Tables"]["schedules"]["Row"];
 export type SupportRequest = Database["public"]["Tables"]["support_requests"]["Row"];
+export type Report = Database["public"]["Tables"]["reports"]["Row"];
 export type PostFeedRow = Database["public"]["Views"]["post_feed"]["Row"];
 
 export type SupportWithAuthor = SupportRequest & {

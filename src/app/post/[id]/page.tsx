@@ -8,6 +8,8 @@ import { MediaGallery } from "@/components/post/media-gallery";
 import { LikeButton } from "@/components/post/like-button";
 import { PostOwnerActions } from "@/components/post/post-owner-actions";
 import { CommentTree } from "@/components/comment/comment-tree";
+import { ShareButton } from "@/components/share-button";
+import { ReportButton } from "@/components/report/report-button";
 import { getPost, getComments } from "@/components/post/queries";
 
 export const dynamic = "force-dynamic";
@@ -96,6 +98,16 @@ export default async function PostDetailPage({
           <span className="text-sm text-muted-foreground">
             댓글 {post.comment_count}
           </span>
+          <div className="ml-auto flex items-center gap-1">
+            <ShareButton title={`${nickname}님의 글`} text={post.body.slice(0, 80)} />
+            {!isAuthor && (
+              <ReportButton
+                targetType="post"
+                targetId={post.id}
+                isLoggedIn={!!userId}
+              />
+            )}
+          </div>
         </div>
       </article>
 

@@ -13,6 +13,8 @@ import {
   SUPPORT_STATUS_META,
 } from "@/components/support/support-card";
 import { SupportStatusControl } from "@/components/support/support-status-control";
+import { ShareButton } from "@/components/share-button";
+import { ReportButton } from "@/components/report/report-button";
 import { deleteSupport } from "@/app/support/actions";
 
 export const dynamic = "force-dynamic";
@@ -98,6 +100,16 @@ export default async function SupportDetailPage({
               <AvatarFallback>{initial(author?.nickname)}</AvatarFallback>
             </Avatar>
             <span className="text-sm text-text-2">{author?.nickname ?? "익명"}</span>
+            <div className="ml-auto flex items-center gap-1">
+              <ShareButton title="지원요청" text={support.body.slice(0, 80)} />
+              {!isOwner && (
+                <ReportButton
+                  targetType="support"
+                  targetId={support.id}
+                  isLoggedIn={!!userId}
+                />
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>

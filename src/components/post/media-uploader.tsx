@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { ImagePlus, X, Film } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ImagePlus, X, Film, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { stripImageMetadata } from "@/lib/strip-exif";
 import type { MediaType } from "@/lib/types";
 
 const VIDEO_MAX_BYTES = 50 * 1024 * 1024; // 50MB
@@ -45,6 +46,7 @@ export function MediaUploader({
   disabled?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [stripExif, setStripExif] = useState(true);
 
   // 언마운트 시 objectURL 정리
   useEffect(() => {
@@ -54,11 +56,16 @@ export function MediaUploader({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function onSelect(files: FileList | null) {
+  async function onSelect(files: FileList | null) {
     if (!files) return;
     const next: LocalMedia[] = [];
     for (const file of Array.from(files)) {
-      const m = makeLocalMedia(file);
+      // 이미지면서 토글 ON이면 EXIF/위치정보 제거
+      const prepared =
+        stripExif && file.type.startsWith("image/")
+          ? await stripImageMetadata(file)
+          : file;
+      const m = makeLocalMedia(prepared);
       if (m) next.push(m);
     }
     if (next.length > 0) onChange([...items, ...next]);
@@ -140,6 +147,20 @@ export function MediaUploader({
       <p className="text-xs text-muted-foreground">
         영상은 50MB 이하. 여러 장 선택 가능.
       </p>
+
+      <label className="flex cursor-pointer items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm">
+        <input
+          type="checkbox"
+          checked={stripExif}
+          onChange={(e) => setStripExif(e.target.checked)}
+          className="size-4 shrink-0 cursor-pointer accent-primary"
+        />
+        <ShieldCheck className="size-4 shrink-0 text-primary" />
+        <span className="text-text-2">
+          사진의 위치정보(EXIF) 제거{" "}
+          <span className="text-muted-foreground">— 촬영 위치 노출 방지(권장)</span>
+        </span>
+      </label>
     </div>
   );
 }
