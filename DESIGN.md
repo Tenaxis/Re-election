@@ -242,6 +242,22 @@ SNS 타임라인의 핵심. 종류 구분 없는 단일 게시글.
 - 이름 · 일시(시작~종료) · 장소(주소+좌표) · 집회 신고 여부
 - 목록/상세/필터(날짜·지역·신고여부) · 예정/지난 구분
 
+### 참여 인증 (Attendance Verification) — 향후 기능
+> MVP 미포함. 후속 Phase에서 추가.
+
+집회 현장 참여를 인증하고, **오늘 인증 완료된 인원 수**를 보여주는 기능.
+
+- **규칙**: 1인 1일 1회 (휴대폰 번호 기준 중복 차단)
+- **인증 단계**: ① 휴대폰 SMS 인증 → ② 위치 인증(집회 좌표 지오펜스, 서버 검증) → ③ 사진 인증
+- **표시**: 집회별 "오늘 인증 완료 N명" 카운터
+
+**위조 방지 (중간 수준 — 현장 회전 코드 방식)**
+- 현장에 **30초마다 바뀌는 QR/코드**를 띄우고, 참여자가 스캔·입력해야 인증 완료
+  → 가짜 GPS를 써도 현장에 없으면 코드를 얻을 수 없음
+- 서버 측 검증: 지오펜스 반경 + 서버 시간 + IP 위치 교차검증(보조)
+- ⚠️ **웹의 한계**: GPS·사진·EXIF는 조작 가능 → 완벽 차단 불가, "부정 비용 상승"이 목표.
+  강한 위조 방지가 필요하면 네이티브 앱(Play Integrity/App Attest·mock 탐지·NFC 비콘) 필요.
+
 ## B4. 공통 기능
 비로그인 조회 / 로그인 등록 · 지도 뷰(글·지원요청·집회 핀) · 검색·필터(태그·위치·시간·날짜) ·
 실시간 반영(Supabase Realtime, 사이트 내) · 신고/모더레이션 + 관리자 대시보드 ·
@@ -273,6 +289,7 @@ EXIF 위치정보 제거 · 반응형 · 다크모드 · 접근성 · PWA · 공
 - **support_requests** — id, author_id, type, location, address, body, status, created_at
 - **schedules** — id, author_id, name, starts_at, ends_at, location, address, is_reported, created_at
 - **reports** — id, reporter_id, target_type, target_id, reason, status, created_at
+- **attendance_verifications** (향후) — id, schedule_id, user_id, phone_hash, location, photo_url, verified_date(date), site_code, created_at · 유니크(user_id, schedule_id, verified_date) → 1인 1일 1회
 
 ## B7. Phase 분할
 
@@ -286,3 +303,7 @@ EXIF 위치정보 제거 · 반응형 · 다크모드 · 접근성 · PWA · 공
 
 ### Phase 3 — 안전·확장
 신고/모더레이션 + 관리자 대시보드 · EXIF 위치정보 제거 · PWA · 접근성 보강 · 공유
+
+### Phase 4 — 참여 인증 (향후)
+집회 참여 인증(휴대폰 + 위치 + 사진, 1인 1일 1회) · 현장 회전 QR/코드 위조 방지 ·
+"오늘 인증 완료 N명" 카운터 · (선택) 네이티브 앱 전환 시 기기 무결성 검증
