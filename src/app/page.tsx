@@ -4,6 +4,7 @@ import { getSessionUser } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { PostCard } from "@/components/post/post-card";
 import { FeedFilters } from "@/components/post/feed-filters";
+import { RealtimeBanner } from "@/components/realtime-banner";
 import { getFeed, type FeedQuery } from "@/components/post/queries";
 
 export const dynamic = "force-dynamic";
@@ -47,6 +48,8 @@ export default async function HomePage({
       </div>
 
       <FeedFilters />
+
+      <RealtimeBanner table="posts" label="글" excludeAuthorId={userId} />
 
       {posts.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-border-strong bg-card py-16 text-center">

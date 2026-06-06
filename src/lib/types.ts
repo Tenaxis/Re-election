@@ -3,6 +3,8 @@
 export type Role = "user" | "admin";
 export type MediaType = "image" | "video";
 export type LikeTarget = "post" | "comment";
+export type SupportType = "manpower" | "food" | "hazard" | "cleanup";
+export type SupportStatus = "open" | "in_progress" | "done";
 
 export type Database = {
   public: {
@@ -71,6 +73,20 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["schedules"]["Insert"]>;
         Relationships: [];
       };
+      support_requests: {
+        Row: {
+          id: string; author_id: string; type: SupportType; body: string;
+          lat: number | null; lng: number | null; address: string | null;
+          status: SupportStatus; created_at: string; updated_at: string;
+        };
+        Insert: {
+          id?: string; author_id: string; type: SupportType; body: string;
+          lat?: number | null; lng?: number | null; address?: string | null;
+          status?: SupportStatus; created_at?: string; updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["support_requests"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: {
       post_feed: {
@@ -98,7 +114,12 @@ export type PostMedia = Database["public"]["Tables"]["post_media"]["Row"];
 export type Comment = Database["public"]["Tables"]["comments"]["Row"];
 export type Like = Database["public"]["Tables"]["likes"]["Row"];
 export type Schedule = Database["public"]["Tables"]["schedules"]["Row"];
+export type SupportRequest = Database["public"]["Tables"]["support_requests"]["Row"];
 export type PostFeedRow = Database["public"]["Views"]["post_feed"]["Row"];
+
+export type SupportWithAuthor = SupportRequest & {
+  author: Pick<Profile, "id" | "nickname">;
+};
 
 // 조인된 화면용 타입
 export type PostWithRelations = PostFeedRow & {

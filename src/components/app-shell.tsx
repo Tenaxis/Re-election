@@ -2,18 +2,33 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, User, PenLine, Megaphone } from "lucide-react";
+import {
+  Home,
+  Calendar,
+  User,
+  PenLine,
+  Megaphone,
+  Map as MapIcon,
+  HeartHandshake,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 
 type NavItem = { href: string; label: string; icon: typeof Home };
 
+// 데스크탑 사이드바: 전체
 const NAV: NavItem[] = [
   { href: "/", label: "피드", icon: Home },
   { href: "/schedule", label: "일정", icon: Calendar },
+  { href: "/map", label: "지도", icon: MapIcon },
+  { href: "/support", label: "지원요청", icon: HeartHandshake },
   { href: "/me", label: "내정보", icon: User },
 ];
+
+// 모바일 하단탭: 피드·일정 / [작성] / 지도·지원요청
+const TAB_LEFT: NavItem[] = [NAV[0], NAV[1]];
+const TAB_RIGHT: NavItem[] = [NAV[2], NAV[3]];
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
@@ -95,7 +110,20 @@ export function AppShell({
         </Link>
         <div className="flex items-center gap-1">
           <ThemeToggle />
-          {!isLoggedIn && (
+          {isLoggedIn ? (
+            <Link
+              href="/me"
+              aria-label="내정보"
+              className={cn(
+                "rounded-md p-2 transition-colors",
+                isActive(pathname, "/me")
+                  ? "text-primary"
+                  : "text-text-2 hover:text-foreground",
+              )}
+            >
+              <User className="size-5" />
+            </Link>
+          ) : (
             <Button asChild variant="secondary" size="sm">
               <Link href="/login">로그인</Link>
             </Button>
@@ -117,15 +145,13 @@ export function AppShell({
 
       {/* ── 모바일 하단 탭 ── */}
       <nav className="fixed inset-x-0 bottom-0 z-30 flex h-16 items-stretch border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
-        {NAV.slice(0, 1).map((item) => (
+        {TAB_LEFT.map((item) => (
           <TabLink key={item.href} {...item} pathname={pathname} />
         ))}
-        <TabLink {...NAV[1]} pathname={pathname} />
         <ComposeTab />
-        <TabLink {...NAV[2]} pathname={pathname} />
-        <div className="flex flex-1 items-center justify-center">
-          <ThemeToggle />
-        </div>
+        {TAB_RIGHT.map((item) => (
+          <TabLink key={item.href} {...item} pathname={pathname} />
+        ))}
       </nav>
     </div>
   );
