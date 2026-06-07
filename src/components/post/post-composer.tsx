@@ -18,33 +18,13 @@ import { TagInput } from "@/components/post/tag-input";
 import {
   LocationField,
   type LocationValue,
-} from "@/components/post/location-field";
+} from "@/components/location/location-field";
 import { createPost, updatePost, type MediaInput } from "@/app/post/actions";
-import type { PostWithRelations } from "@/lib/types";
+import type { ComposerInitial } from "@/components/post/composer-types";
 
 const BODY_MAX = 5000;
 
-export type ComposerInitial = {
-  id: string;
-  body: string;
-  address: string | null;
-  lat: number | null;
-  lng: number | null;
-  occurred_at: string | null;
-  tags: string[];
-};
-
-export function postToInitial(post: PostWithRelations): ComposerInitial {
-  return {
-    id: post.id,
-    body: post.body,
-    address: post.address,
-    lat: post.lat,
-    lng: post.lng,
-    occurred_at: post.occurred_at,
-    tags: post.tags,
-  };
-}
+export type { ComposerInitial };
 
 function extOf(file: File): string {
   const fromName = file.name.includes(".")
@@ -163,7 +143,11 @@ export function PostComposer({
         <MediaUploader items={media} onChange={setMedia} disabled={submitting} />
       )}
 
-      <LocationField value={location} onChange={setLocation} />
+      <LocationField
+        value={location}
+        onChange={setLocation}
+        autoLocate={!isEdit}
+      />
 
       <div className="space-y-2">
         <Label htmlFor="occurred-at">발생 시간 (선택)</Label>

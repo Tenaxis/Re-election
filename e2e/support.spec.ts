@@ -9,7 +9,7 @@ test("지원요청 등록 → 목록 노출 → 상태 변경", async ({ page })
   await page.goto("/support/new");
   await page.locator("#type").selectOption("food");
   await page.locator("#body").fill(body);
-  await page.locator("#address").fill("서울 중구 세종대로 110 인근");
+  await page.locator("#loc-address").fill("서울 중구 세종대로 110 인근");
   await page.getByRole("button", { name: "지원 요청하기" }).click();
 
   // 등록 후 /support/new 를 벗어남

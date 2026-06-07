@@ -27,9 +27,10 @@ test("참여 인증: 위치+코드+사진+휴대폰 → 오늘 인증 카운트 
   await page.goto("/schedule/new");
   await page.locator("#name").fill(name);
   await page.locator("#starts_at").fill(dtLocal(1, 18, 0));
-  await page.locator("#address").fill("서울특별시 중구 세종대로 110");
-  await page.locator("#lat").fill(String(LAT));
-  await page.locator("#lng").fill(String(LNG));
+  // 지도 picker: 현재 위치(모킹된 LAT/LNG)로 좌표 지정
+  await page.getByRole("button", { name: "현재 위치" }).click();
+  await expect(page.locator('input[name="lat"]')).not.toHaveValue("");
+  await page.locator("#loc-address").fill("서울특별시 중구 세종대로 110");
   await page.locator("#verify_code").fill(code);
   await page.getByRole("button", { name: "일정 등록" }).click();
   await page.waitForURL((u) => !u.pathname.endsWith("/new"), { timeout: 20_000 });

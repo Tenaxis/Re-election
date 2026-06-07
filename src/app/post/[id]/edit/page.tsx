@@ -1,6 +1,7 @@
 import { redirect, notFound } from "next/navigation";
 import { getSessionUser } from "@/lib/auth";
-import { PostComposer, postToInitial } from "@/components/post/post-composer";
+import { PostComposer } from "@/components/post/post-composer";
+import { postToInitial } from "@/components/post/composer-types";
 import { getPost } from "@/components/post/queries";
 
 export const dynamic = "force-dynamic";

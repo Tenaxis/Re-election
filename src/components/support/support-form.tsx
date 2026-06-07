@@ -3,10 +3,10 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { LocationFormField } from "@/components/location/location-form-field";
 import {
   createSupport,
   updateSupport,
@@ -90,50 +90,16 @@ export function SupportForm({ initial }: { initial?: SupportRequest }) {
         <FieldError id="body-error" message={err?.body?.[0]} />
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="address">위치 (주소, 선택)</Label>
-        <Textarea
-          id="address"
-          name="address"
-          defaultValue={initial?.address ?? ""}
-          placeholder="예) 서울특별시 중구 세종대로 110 인근"
-          className="min-h-20"
-          aria-invalid={err?.address ? true : undefined}
-          aria-describedby={err?.address ? "address-error" : undefined}
-        />
-        <FieldError id="address-error" message={err?.address?.[0]} />
-      </div>
-
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <legend className="sr-only">위치 좌표 (선택)</legend>
-        <div className="space-y-1.5">
-          <Label htmlFor="lat">위도 (선택)</Label>
-          <Input
-            id="lat"
-            name="lat"
-            inputMode="decimal"
-            defaultValue={initial?.lat?.toString() ?? ""}
-            placeholder="37.5665"
-            aria-invalid={err?.lat ? true : undefined}
-            aria-describedby={err?.lat ? "lat-error" : undefined}
-          />
-          <FieldError id="lat-error" message={err?.lat?.[0]} />
-        </div>
-
-        <div className="space-y-1.5">
-          <Label htmlFor="lng">경도 (선택)</Label>
-          <Input
-            id="lng"
-            name="lng"
-            inputMode="decimal"
-            defaultValue={initial?.lng?.toString() ?? ""}
-            placeholder="126.9780"
-            aria-invalid={err?.lng ? true : undefined}
-            aria-describedby={err?.lng ? "lng-error" : undefined}
-          />
-          <FieldError id="lng-error" message={err?.lng?.[0]} />
-        </div>
-      </fieldset>
+      <LocationFormField
+        initial={
+          initial
+            ? { address: initial.address, lat: initial.lat, lng: initial.lng }
+            : undefined
+        }
+        label="위치 (선택)"
+        addressError={err?.address?.[0]}
+        autoLocate={!isEdit}
+      />
 
       {state.error ? (
         <p role="alert" className="text-sm text-destructive">

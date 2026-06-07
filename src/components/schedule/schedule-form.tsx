@@ -4,8 +4,8 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { LocationFormField } from "@/components/location/location-form-field";
 import {
   createSchedule,
   updateSchedule,
@@ -89,51 +89,16 @@ export function ScheduleForm({ initial }: { initial?: Schedule }) {
         </div>
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="address">장소 (주소)</Label>
-        <Textarea
-          id="address"
-          name="address"
-          defaultValue={initial?.address ?? ""}
-          placeholder="예) 서울특별시 중구 세종대로 110"
-          className="min-h-20"
-          aria-invalid={err?.address ? true : undefined}
-          aria-describedby={err?.address ? "address-error" : undefined}
-          required
-        />
-        <FieldError id="address-error" message={err?.address?.[0]} />
-      </div>
-
-      <fieldset className="grid gap-4 sm:grid-cols-2">
-        <legend className="sr-only">위치 좌표 (선택)</legend>
-        <div className="space-y-1.5">
-          <Label htmlFor="lat">위도 (선택)</Label>
-          <Input
-            id="lat"
-            name="lat"
-            inputMode="decimal"
-            defaultValue={initial?.lat?.toString() ?? ""}
-            placeholder="37.5665"
-            aria-invalid={err?.lat ? true : undefined}
-            aria-describedby={err?.lat ? "lat-error" : undefined}
-          />
-          <FieldError id="lat-error" message={err?.lat?.[0]} />
-        </div>
-
-        <div className="space-y-1.5">
-          <Label htmlFor="lng">경도 (선택)</Label>
-          <Input
-            id="lng"
-            name="lng"
-            inputMode="decimal"
-            defaultValue={initial?.lng?.toString() ?? ""}
-            placeholder="126.9780"
-            aria-invalid={err?.lng ? true : undefined}
-            aria-describedby={err?.lng ? "lng-error" : undefined}
-          />
-          <FieldError id="lng-error" message={err?.lng?.[0]} />
-        </div>
-      </fieldset>
+      <LocationFormField
+        initial={
+          initial
+            ? { address: initial.address, lat: initial.lat, lng: initial.lng }
+            : undefined
+        }
+        label="장소 (필수)"
+        addressRequired
+        addressError={err?.address?.[0]}
+      />
 
       <div className="flex items-center gap-3 rounded-md border border-border bg-card p-3">
         <input
@@ -180,8 +145,8 @@ export function ScheduleForm({ initial }: { initial?: Schedule }) {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          참여 인증에는 위 좌표(위도·경도)가 필요합니다. 좌표 없이 코드만 저장하면
-          인증을 받을 수 없습니다.
+          참여 인증에는 위 ‘장소’의 지도 위치가 필요합니다. 지도에서 위치를 지정하지
+          않고 코드만 저장하면 인증을 받을 수 없습니다.
         </p>
       </fieldset>
 
