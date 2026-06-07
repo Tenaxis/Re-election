@@ -14,7 +14,7 @@ const SUPPORT_TYPE_LABEL: Record<string, string> = {
 export default async function MapPage() {
   const supabase = await createClient();
 
-  const [postsRes, supportRes, schedulesRes] = await Promise.all([
+  const [postsRes, supportRes, schedulesRes, liveRes] = await Promise.all([
     supabase
       .from("posts")
       .select("id, body, lat, lng")
@@ -28,6 +28,11 @@ export default async function MapPage() {
     supabase
       .from("schedules")
       .select("id, name, lat, lng")
+      .not("lat", "is", null)
+      .not("lng", "is", null),
+    supabase
+      .from("live_streams")
+      .select("id, location_label, schedule_id, lat, lng")
       .not("lat", "is", null)
       .not("lng", "is", null),
   ]);
@@ -68,12 +73,24 @@ export default async function MapPage() {
     });
   }
 
+  for (const lv of liveRes.data ?? []) {
+    if (lv.lat == null || lv.lng == null) continue;
+    points.push({
+      id: lv.id,
+      lat: lv.lat,
+      lng: lv.lng,
+      title: lv.location_label,
+      kind: "live",
+      href: `/schedule/${lv.schedule_id}/live`,
+    });
+  }
+
   return (
     <div className="space-y-4">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold">지도</h1>
         <p className="text-sm text-text-2">
-          좌표가 있는 글·지원요청·집회를 지도에서 확인하세요.
+          좌표가 있는 글·지원요청·집회·라이브를 지도에서 확인하세요.
         </p>
       </div>
 

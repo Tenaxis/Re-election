@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CalendarClock, MapPin, Pencil, ArrowLeft, Users, ShieldCheck, KeyRound } from "lucide-react";
+import { CalendarClock, MapPin, Pencil, ArrowLeft, Users, ShieldCheck, KeyRound, Radio } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
@@ -47,6 +47,11 @@ export default async function ScheduleDetailPage({
 
   const canVerify =
     schedule.lat != null && schedule.lng != null && Boolean(schedule.verify_code);
+
+  const { count: liveCount } = await supabase
+    .from("live_streams")
+    .select("id", { count: "exact", head: true })
+    .eq("schedule_id", id);
 
   return (
     <div className="space-y-6">
@@ -113,6 +118,13 @@ export default async function ScheduleDetailPage({
           </div>
         </CardContent>
       </Card>
+
+      <Button asChild variant="secondary" className="w-full">
+        <Link href={`/schedule/${schedule.id}/live`}>
+          <Radio className="size-4" aria-hidden />
+          실시간 라이브{liveCount ? ` (${liveCount})` : ""}
+        </Link>
+      </Button>
 
       {userId ? (
         canVerify ? (

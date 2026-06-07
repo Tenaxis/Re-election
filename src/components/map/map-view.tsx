@@ -11,7 +11,9 @@ export type MapPoint = {
   lat: number;
   lng: number;
   title: string;
-  kind: "post" | "support" | "schedule";
+  kind: "post" | "support" | "schedule" | "live";
+  /** 지정 시 KIND_META.href 대신 이 링크 사용 (예: 라이브 → 집회 라이브 페이지) */
+  href?: string;
 };
 
 const SEOUL_CITY_HALL: [number, number] = [37.5665, 126.978];
@@ -24,9 +26,10 @@ const KIND_META: Record<
   post: { label: "글", color: "#0d9488", href: (id) => `/post/${id}` },
   support: { label: "지원요청", color: "#d97706", href: (id) => `/support/${id}` },
   schedule: { label: "집회", color: "#7c3aed", href: (id) => `/schedule/${id}` },
+  live: { label: "라이브", color: "#db2777", href: (id) => `/schedule/${id}/live` },
 };
 
-const KINDS: MapPoint["kind"][] = ["post", "support", "schedule"];
+const KINDS: MapPoint["kind"][] = ["post", "support", "schedule", "live"];
 
 /** 색상 원형 마커 (기본 마커 아이콘 깨짐 방지) */
 function createIcon(color: string) {
@@ -59,6 +62,7 @@ export function MapView({ points }: { points: MapPoint[] }) {
     post: true,
     support: true,
     schedule: true,
+    live: true,
   });
 
   const icons = useMemo(
@@ -66,6 +70,7 @@ export function MapView({ points }: { points: MapPoint[] }) {
       post: createIcon(KIND_META.post.color),
       support: createIcon(KIND_META.support.color),
       schedule: createIcon(KIND_META.schedule.color),
+      live: createIcon(KIND_META.live.color),
     }),
     [],
   );
@@ -142,7 +147,7 @@ export function MapView({ points }: { points: MapPoint[] }) {
                     {point.title}
                   </p>
                   <a
-                    href={meta.href(point.id)}
+                    href={point.href ?? meta.href(point.id)}
                     className="text-xs font-medium text-primary underline"
                   >
                     상세 보기

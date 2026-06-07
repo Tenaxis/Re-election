@@ -7,6 +7,7 @@ export type SupportType = "manpower" | "food" | "hazard" | "cleanup";
 export type SupportStatus = "open" | "in_progress" | "done";
 export type ReportTarget = "post" | "comment" | "support";
 export type ReportStatus = "open" | "resolved";
+export type LiveSourceType = "video" | "channel";
 
 export type Database = {
   public: {
@@ -117,6 +118,22 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["attendance_verifications"]["Insert"]>;
         Relationships: [];
       };
+      live_streams: {
+        Row: {
+          id: string; schedule_id: string; location_label: string;
+          source_type: LiveSourceType; youtube_ref: string; title: string | null;
+          lat: number | null; lng: number | null; added_by: string;
+          sort_order: number; created_at: string;
+        };
+        Insert: {
+          id?: string; schedule_id: string; location_label: string;
+          source_type: LiveSourceType; youtube_ref: string; title?: string | null;
+          lat?: number | null; lng?: number | null; added_by: string;
+          sort_order?: number; created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["live_streams"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: {
       attendance_today: {
@@ -148,6 +165,7 @@ export type PostMedia = Database["public"]["Tables"]["post_media"]["Row"];
 export type Comment = Database["public"]["Tables"]["comments"]["Row"];
 export type Like = Database["public"]["Tables"]["likes"]["Row"];
 export type Schedule = Database["public"]["Tables"]["schedules"]["Row"];
+export type LiveStream = Database["public"]["Tables"]["live_streams"]["Row"];
 export type SupportRequest = Database["public"]["Tables"]["support_requests"]["Row"];
 export type Report = Database["public"]["Tables"]["reports"]["Row"];
 export type AttendanceVerification = Database["public"]["Tables"]["attendance_verifications"]["Row"];
