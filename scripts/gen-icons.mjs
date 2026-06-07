@@ -1,4 +1,4 @@
-// PWA 아이콘 생성: 청록 라운드 사각 + 흰 메가폰. playwright로 렌더 후 캡처.
+// PWA 아이콘 생성: 청록 라운드 사각 + 흰 투표(선거) 아이콘. playwright로 렌더 후 캡처.
 import { chromium } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 
@@ -11,7 +11,7 @@ function html(size) {
   return `<!doctype html><html><body style="margin:0">
   <div style="width:${size}px;height:${size}px;background:#0d9488;border-radius:${r}px;display:flex;align-items:center;justify-content:center">
     <svg width="${ic}" height="${ic}" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>
+      <path d="m9 12 2 2 4-4"/><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"/><path d="M22 19H2"/>
     </svg>
   </div></body></html>`;
 }

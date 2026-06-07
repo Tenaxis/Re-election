@@ -1,6 +1,6 @@
 import { WifiOff } from "lucide-react";
 
-export const metadata = { title: "오프라인 — 광장" };
+export const metadata = { title: "오프라인 — 재선거" };
 
 export default function OfflinePage() {
   return (

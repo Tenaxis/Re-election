@@ -8,7 +8,7 @@ import { ServiceWorkerRegister } from "@/components/sw-register";
 import { getSessionUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
-  title: "광장 — 집회·시위 운영 플랫폼",
+  title: "재선거 — 집회·시위 운영 플랫폼",
   description:
     "집회·시위를 기록하고 운영하는 공간. 글·사진·영상 공유, 현장 지원, 집회 일정.",
 };

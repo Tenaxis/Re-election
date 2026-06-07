@@ -15,7 +15,7 @@ async function signUp(page) {
   await page.locator("#password").fill("password1234");
   await page.getByRole("button", { name: "회원가입" }).click();
   await page.waitForURL("**/onboarding", { timeout: 20000 });
-  await page.locator("#nickname").fill(`광장지기_${id}`.slice(0, 20));
+  await page.locator("#nickname").fill(`재선거지기_${id}`.slice(0, 20));
   await page.getByRole("button", { name: "시작하기" }).click();
   await page.waitForURL((u) => !u.pathname.startsWith("/onboarding"), { timeout: 20000 });
 }

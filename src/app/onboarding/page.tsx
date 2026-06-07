@@ -27,7 +27,7 @@ export default async function OnboardingPage() {
         <CardHeader>
           <CardTitle className="text-xl">닉네임 설정</CardTitle>
           <CardDescription>
-            광장에서 사용할 가명을 정해주세요. 실명 대신 닉네임만 노출됩니다.
+            재선거에서 사용할 가명을 정해주세요. 실명 대신 닉네임만 노출됩니다.
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -21,7 +21,7 @@ export default async function SignupPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">회원가입</CardTitle>
-          <CardDescription>이메일로 광장 계정을 만드세요.</CardDescription>
+          <CardDescription>이메일로 재선거 계정을 만드세요.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
           <AuthForm mode="signup" next={next} />

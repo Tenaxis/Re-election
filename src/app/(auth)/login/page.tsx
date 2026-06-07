@@ -21,7 +21,7 @@ export default async function LoginPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">로그인</CardTitle>
-          <CardDescription>광장에 다시 오신 것을 환영합니다.</CardDescription>
+          <CardDescription>재선거에 다시 오신 것을 환영합니다.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
           <AuthForm mode="login" next={next} />

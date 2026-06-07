@@ -1,5 +1,5 @@
-// 광장 PWA 서비스워커 — 앱 셸 캐시 + 오프라인 폴백(네트워크 우선)
-const CACHE = "gwangjang-v1";
+// 재선거 PWA 서비스워커 — 앱 셸 캐시 + 오프라인 폴백(네트워크 우선)
+const CACHE = "reelection-v2";
 const SHELL = ["/", "/offline"];
 
 self.addEventListener("install", (event) => {

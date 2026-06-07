@@ -7,7 +7,7 @@ import {
   Calendar,
   User,
   PenLine,
-  Megaphone,
+  Vote,
   Map as MapIcon,
   HeartHandshake,
   ShieldAlert,
@@ -57,9 +57,9 @@ export function AppShell({
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-border bg-background px-3 py-5 lg:flex">
         <Link href="/" className="mb-6 flex items-center gap-2 px-2">
           <span className="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <Megaphone className="size-5" />
+            <Vote className="size-5" />
           </span>
-          <span className="text-lg font-bold tracking-tight">광장</span>
+          <span className="text-lg font-bold tracking-tight">재선거</span>
         </Link>
 
         <nav className="flex flex-1 flex-col gap-1">
@@ -121,9 +121,9 @@ export function AppShell({
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur lg:hidden">
         <Link href="/" className="flex items-center gap-2">
           <span className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <Megaphone className="size-4" />
+            <Vote className="size-4" />
           </span>
-          <span className="text-base font-bold tracking-tight">광장</span>
+          <span className="text-base font-bold tracking-tight">재선거</span>
         </Link>
         <div className="flex items-center gap-1">
           <ThemeToggle />
