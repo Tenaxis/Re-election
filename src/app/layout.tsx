@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AppShell } from "@/components/app-shell";
 import { RightRail } from "@/components/right-rail";
 import { ServiceWorkerRegister } from "@/components/sw-register";
+import { Analytics } from "@vercel/analytics/next";
 import { getSessionUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -59,6 +60,7 @@ export default async function RootLayout({
           <Toaster />
           <ServiceWorkerRegister />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
